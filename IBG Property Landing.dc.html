@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:#0d1c38;color:#fff;font-family:'Montserrat',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+    a{text-decoration:none;color:inherit;}
+    button{font-family:inherit;background:none;border:none;cursor:pointer;}
+    ::selection{background:rgba(230,220,160,.28);}
+    ::-webkit-scrollbar{width:3px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:rgba(230,220,160,.32);border-radius:2px;}
+
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes spinCW{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+    @keyframes spinCCW{from{transform:rotate(0deg);}to{transform:rotate(-360deg);}}
+    @keyframes orb1{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+    @keyframes orb2{from{transform:rotate(120deg);}to{transform:rotate(480deg);}}
+    @keyframes orb3{from{transform:rotate(240deg);}to{transform:rotate(-120deg);}}
+    @keyframes pulse{0%,100%{opacity:.65;transform:scale(1);}50%{opacity:1;transform:scale(1.18);}}
+    @keyframes bounce{0%,100%{transform:translateY(0);opacity:.8;}50%{transform:translateY(9px);opacity:.28;}}
+    @keyframes ping{0%{transform:scale(1);opacity:.55;}100%{transform:scale(2.4);opacity:0;}}
+    @keyframes flowLine{0%{transform:translateX(-100%);}100%{transform:translateX(200%);}}
+    @keyframes floatUp{0%{transform:translateY(0);opacity:0;}15%{opacity:.75;}90%{opacity:.55;}100%{transform:translateY(-55px);opacity:0;}}
+    @keyframes shimmer{0%,100%{opacity:.42;}50%{opacity:.9;}}
+    @keyframes lineDash{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
+    @keyframes scanMove{0%{background-position:0 0;}100%{background-position:0 80px;}}
+    @keyframes stateIn{from{opacity:0;transform:translateX(-28px);}to{opacity:1;transform:translateX(0);}}
+
+    .reveal{opacity:0;transform:translateY(32px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);}
+    .reveal.in{opacity:1;transform:translateY(0);}
+    .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}.d4{transition-delay:.4s;}.d5{transition-delay:.5s;}
+
+    .nlnk{color:rgba(255,255,255,.55);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:color .25s;}
+    .nlnk:hover{color:#E6DCA0;}
+
+    .q-opt{display:block;width:100%;padding:15px 20px;border:1px solid rgba(230,220,160,.18);border-radius:10px;background:rgba(28,53,94,.28);color:rgba(255,255,255,.82);font-size:14px;font-family:'Montserrat',sans-serif;font-weight:400;text-align:left;cursor:pointer;transition:all .2s;line-height:1.5;}
+    .q-opt:hover:not(:disabled){background:rgba(230,220,160,.1);border-color:rgba(230,220,160,.48);color:#fff;transform:translateX(3px);}
+    .q-opt.q-sel{background:rgba(230,220,160,.13);border-color:#E6DCA0;color:#E6DCA0;}
+    .q-opt:disabled{cursor:default;}
+
+    .b-opt{padding:11px 22px;border-radius:8px;border:1px solid rgba(230,220,160,.2);background:rgba(28,53,94,.25);color:rgba(255,255,255,.72);font-size:13px;font-family:'Montserrat',sans-serif;font-weight:500;cursor:pointer;transition:all .2s;}
+    .b-opt:hover{border-color:rgba(230,220,160,.44);color:#fff;}
+    .b-opt.b-sel{background:rgba(230,220,160,.15);border-color:#E6DCA0;color:#E6DCA0;}
+
+    .cslider{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:rgba(230,220,160,.2);border-radius:2px;outline:none;cursor:pointer;}
+    .cslider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#E6DCA0;cursor:pointer;box-shadow:0 0 16px rgba(230,220,160,.55),0 0 0 4px rgba(230,220,160,.1);}
+    .cslider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#E6DCA0;cursor:pointer;border:none;}
+
+    .flow-wrap{display:flex;flex-direction:row;align-items:flex-start;justify-content:center;gap:0;}
+
+    @media(max-width:768px){
+      .hm{display:none!important;}
+      .g2{grid-template-columns:1fr!important;gap:28px!important;}
+      .g3{grid-template-columns:1fr!important;gap:14px!important;}
+      .hh{font-size:32px!important;line-height:1.1!important;}
+      .sh{font-size:26px!important;line-height:1.15!important;}
+      .sec{padding:60px 20px!important;}
+      .cc{flex-direction:column!important;gap:12px!important;align-items:stretch!important;}
+      .cc a{text-align:center!important;justify-content:center!important;}
+      .dtfear{border-right:none!important;border-bottom:1px solid rgba(255,255,255,.05)!important;}
+      .dtrow{grid-template-columns:1fr!important;}
+      .flow-wrap{flex-direction:column!important;align-items:center!important;}
+    }
+    @media(min-width:769px){.hd{display:none!important;}}
+  </style>
+</helmet>
+
+<template id="__bundler_thumbnail"><svg viewBox="0 0 80 56" xmlns="http://www.w3.org/2000/svg"><rect width="80" height="56" fill="#0d1c38"/><circle cx="20" cy="20" r="18" fill="#1C355E" opacity=".7"/><circle cx="65" cy="38" r="14" fill="#1C355E" opacity=".5"/><text x="40" y="32" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#E6DCA0">IBG</text></svg></template>
+
+<canvas id="bgC" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+
+<!-- ═══ NAV ═══ -->
+<nav id="mainNav" style="position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s,border-color .4s;padding:0 40px;">
+  <div style="max-width:1160px;margin:0 auto;height:68px;display:flex;align-items:center;justify-content:space-between;">
+    <img src="uploads/White.png" alt="IBG Property" style="height:32px;object-fit:contain;cursor:pointer;" />
+    <div style="display:flex;align-items:center;gap:34px;" class="hm">
+      <a class="nlnk" href="#how-it-works">{{ n1 }}</a>
+      <a class="nlnk" href="#calculator">{{ n2 }}</a>
+      <a class="nlnk" href="#cases">{{ n3 }}</a>
+      <a class="nlnk" href="#entry">{{ n4 }}</a>
+      <a class="nlnk" href="IBG Guide.dc.html" style="display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border:1px solid rgba(230,220,160,.28);border-radius:20px;color:rgba(230,220,160,.82);letter-spacing:.1em;">
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><line x1="3.5" y1="4" x2="8.5" y2="4" stroke="currentColor" stroke-width="1"/><line x1="3.5" y1="6" x2="8.5" y2="6" stroke="currentColor" stroke-width="1"/><line x1="3.5" y1="8" x2="6.5" y2="8" stroke="currentColor" stroke-width="1"/></svg>
+        {{ n5 }}
+      </a>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <button onClick="{{ toggleLang }}" class="nlnk hm" style="padding:5px 12px;border:1px solid rgba(230,220,160,.28);border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.12em;color:rgba(230,220,160,.72);">{{ langBtn }}</button>
+      <a href="https://t.me/+KRtzaV7lxOE5ZmQ1" target="_blank" class="nlnk" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid rgba(230,220,160,.28);border-radius:50%;color:rgba(255,255,255,.68);transition:all .25s;">
+        <svg width="14" height="13" viewBox="0 0 16 14" fill="none"><path d="M15.9 1.48L13.52 12.88C13.34 13.68 12.88 13.88 12.24 13.52L8.64 10.88L6.92 12.52C6.72 12.72 6.56 12.88 6.2 12.88L6.44 9.2L13.12 3.2C13.4 2.96 13.06 2.82 12.68 3.06L4.38 8.24L0.84 7.14C0.06 6.9 0.04 6.38 1 6.02L14.88 0.42C15.54 0.18 16.1 0.56 15.9 1.48Z" fill="currentColor"/></svg>
+      </a>
+      <button onClick="{{ openMenu }}" class="hd" style="display:flex;flex-direction:column;gap:5px;padding:6px;cursor:pointer;">
+        <span style="display:block;width:22px;height:1.5px;background:rgba(255,255,255,.8);border-radius:1px;"></span>
+        <span style="display:block;width:22px;height:1.5px;background:rgba(255,255,255,.8);border-radius:1px;"></span>
+        <span style="display:block;width:16px;height:1.5px;background:rgba(255,255,255,.8);border-radius:1px;"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:rgba(8,14,28,.97);backdrop-filter:blur(24px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;animation:fadeIn .3s ease;">
+    <button onClick="{{ closeMenu }}" style="position:absolute;top:18px;right:18px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(230,220,160,.28);border-radius:50%;color:rgba(255,255,255,.6);font-size:18px;cursor:pointer;background:none;">✕</button>
+    <a href="#how-it-works" onClick="{{ closeMenu }}" class="nlnk" style="font-size:14px;letter-spacing:.22em;">{{ n1 }}</a>
+    <a href="#calculator" onClick="{{ closeMenu }}" class="nlnk" style="font-size:14px;letter-spacing:.22em;">{{ n2 }}</a>
+    <a href="#cases" onClick="{{ closeMenu }}" class="nlnk" style="font-size:14px;letter-spacing:.22em;">{{ n3 }}</a>
+    <a href="#entry" onClick="{{ closeMenu }}" class="nlnk" style="font-size:14px;letter-spacing:.22em;">{{ n4 }}</a>
+    <a href="IBG Guide.dc.html" onClick="{{ closeMenu }}" class="nlnk" style="font-size:14px;letter-spacing:.22em;display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border:1px solid rgba(230,220,160,.28);border-radius:20px;color:rgba(230,220,160,.82);">{{ n5 }}</a>
+    <button onClick="{{ toggleLang }}" style="margin-top:16px;padding:8px 22px;border:1px solid rgba(230,220,160,.28);border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(230,220,160,.72);cursor:pointer;background:none;">{{ langBtn }}</button>
+  </div>
+</sc-if>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero" style="position:relative;z-index:1;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+
+  <!-- Orbital ring — desktop only -->
+  <div style="position:absolute;right:2%;top:50%;transform:translateY(-50%);width:420px;height:420px;pointer-events:none;opacity:.42;" class="hm">
+    <div style="position:absolute;inset:0;border-radius:50%;border:1px dashed rgba(230,220,160,.13);animation:spinCW 42s linear infinite;"></div>
+    <div style="position:absolute;inset:32px;border-radius:50%;border:1px solid rgba(28,53,94,.85);background:radial-gradient(circle,rgba(28,53,94,.28) 0%,transparent 70%);animation:spinCCW 26s linear infinite;"></div>
+    <div style="position:absolute;inset:64px;border-radius:50%;border:1px solid rgba(230,220,160,.09);animation:spinCW 18s linear infinite;"></div>
+    <div style="position:absolute;inset:104px;border-radius:50%;border:1px dashed rgba(230,220,160,.06);animation:spinCCW 11s linear infinite;"></div>
+    <div style="position:absolute;top:50%;left:50%;animation:orb1 9s linear infinite;transform-origin:0 0;">
+      <div style="position:absolute;width:9px;height:9px;border-radius:50%;background:#E6DCA0;box-shadow:0 0 14px rgba(230,220,160,.9),0 0 28px rgba(230,220,160,.35);top:-4.5px;left:196px;"></div>
+    </div>
+    <div style="position:absolute;top:50%;left:50%;animation:orb2 14s linear infinite;transform-origin:0 0;">
+      <div style="position:absolute;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.72);box-shadow:0 0 9px rgba(255,255,255,.55);top:-3px;left:148px;"></div>
+    </div>
+    <div style="position:absolute;top:50%;left:50%;animation:orb3 6s linear infinite;transform-origin:0 0;">
+      <div style="position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(230,220,160,.65);top:-2px;left:106px;"></div>
+    </div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+      <div style="width:18px;height:18px;border-radius:50%;background:#E6DCA0;box-shadow:0 0 22px rgba(230,220,160,.8),0 0 48px rgba(230,220,160,.28);animation:pulse 3s ease infinite;"></div>
+    </div>
+    <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.05;" viewBox="0 0 420 420">
+      <line x1="210" y1="0" x2="210" y2="420" stroke="#E6DCA0" stroke-width="1"/>
+      <line x1="0" y1="210" x2="420" y2="210" stroke="#E6DCA0" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <!-- Floating money badges — desktop only -->
+  <div style="position:absolute;left:3%;bottom:26%;animation:floatUp 6s ease infinite;" class="hm">
+    <div style="padding:10px 16px;background:rgba(28,53,94,.55);border:1px solid rgba(230,220,160,.24);border-radius:8px;backdrop-filter:blur(12px);white-space:nowrap;">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(230,220,160,.6);margin-bottom:3px;">Комиссия</div>
+      <div style="font-size:18px;font-weight:800;color:#E6DCA0;white-space:nowrap;">$4 200</div>
+    </div>
+  </div>
+  <div style="position:absolute;left:7%;bottom:52%;animation:floatUp 7s ease infinite;animation-delay:1.8s;" class="hm">
+    <div style="padding:10px 16px;background:rgba(28,53,94,.52);border:1px solid rgba(230,220,160,.16);border-radius:8px;backdrop-filter:blur(12px);white-space:nowrap;">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(230,220,160,.42);margin-bottom:3px;">Партнёр</div>
+      <div style="font-size:18px;font-weight:800;color:rgba(255,255,255,.72);white-space:nowrap;">$3 600</div>
+    </div>
+  </div>
+  <div style="position:absolute;left:2%;bottom:65%;animation:floatUp 8s ease infinite;animation-delay:3.5s;" class="hm">
+    <div style="padding:10px 16px;background:rgba(28,53,94,.52);border:1px solid rgba(230,220,160,.14);border-radius:8px;backdrop-filter:blur(12px);white-space:nowrap;">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(230,220,160,.4);margin-bottom:3px;">Повторная</div>
+      <div style="font-size:18px;font-weight:800;color:rgba(255,255,255,.68);white-space:nowrap;">$5 600</div>
+    </div>
+  </div>
+  <div style="position:absolute;left:8%;bottom:38%;animation:floatUp 6.5s ease infinite;animation-delay:5s;" class="hm">
+    <div style="padding:10px 16px;background:rgba(28,53,94,.5);border:1px solid rgba(100,220,130,.18);border-radius:8px;backdrop-filter:blur(12px);white-space:nowrap;">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(100,220,130,.55);margin-bottom:3px;">Три сделки</div>
+      <div style="font-size:18px;font-weight:800;color:rgba(100,220,130,.85);white-space:nowrap;">$8 700</div>
+    </div>
+  </div>
+  <div style="position:absolute;left:1%;bottom:78%;animation:floatUp 7.5s ease infinite;animation-delay:2.5s;" class="hm">
+    <div style="padding:10px 16px;background:rgba(28,53,94,.52);border:1px solid rgba(230,220,160,.14);border-radius:8px;backdrop-filter:blur(12px);white-space:nowrap;">
+      <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(230,220,160,.4);margin-bottom:3px;">14 месяцев</div>
+      <div style="font-size:18px;font-weight:800;color:rgba(255,255,255,.65);white-space:nowrap;">× 2</div>
+    </div>
+  </div>
+
+  <!-- Hero content -->
+  <div id="heroContent" style="text-align:center;max-width:800px;padding:92px 24px 36px;position:relative;z-index:2;opacity:1;">
+
+    <!-- Insider badge -->
+    <div class="reveal" style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(230,220,160,.06);border:1px solid rgba(230,220,160,.2);border-radius:20px;margin-bottom:28px;">
+      <div style="width:6px;height:6px;border-radius:50%;background:#E6DCA0;animation:pulse 2s ease infinite;flex-shrink:0;"></div>
+      <span style="font-size:9px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(230,220,160,.7);">{{ badge }}</span>
+    </div>
+
+    <h1 class="hh reveal d1" style="font-size:58px;font-weight:800;line-height:1.08;letter-spacing:-.022em;color:#fff;">
+      {{ ht1 }}<br><span style="color:#E6DCA0;">{{ ht2 }}</span>
+    </h1>
+
+    <div class="reveal d2" style="margin-top:18px;display:inline-flex;align-items:center;gap:14px;">
+      <span style="display:block;width:32px;height:1px;background:rgba(230,220,160,.3);"></span>
+      <div style="display:inline-flex;align-items:center;gap:10px;padding:8px 20px;background:rgba(230,220,160,.06);border:1px solid rgba(230,220,160,.28);border-radius:24px;">
+        <div style="width:5px;height:5px;border-radius:50%;background:#E6DCA0;flex-shrink:0;animation:pulse 2.5s ease infinite;"></div>
+        <span style="font-size:14px;font-weight:500;color:#E6DCA0;letter-spacing:.04em;">{{ hsub }}</span>
+      </div>
+      <span style="display:block;width:32px;height:1px;background:rgba(230,220,160,.3);"></span>
+    </div>
+
+    <div class="reveal d2" style="margin:24px auto;width:1px;height:36px;background:linear-gradient(to bottom,transparent,rgba(230,220,160,.4),transparent);"></div>
+
+    <p class="reveal d3" style="font-size:17px;font-weight:300;line-height:1.72;color:rgba(255,255,255,.68);max-width:500px;margin:0 auto;">{{ hbody }}</p>
+
+    <!-- WARM LEAD ANIMATION -->
+    <div class="reveal d4" style="display:flex;align-items:center;justify-content:center;gap:0;margin-top:36px;">
+
+      <!-- Node: ТЫ -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:7px;flex-shrink:0;">
+        <div style="width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.28);background:rgba(28,53,94,.45);display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="rgba(255,255,255,.72)" stroke-width="1.5"/><path d="M5 20c0-3.87 3.13-7 7-7s7 3.13 7 7" stroke="rgba(255,255,255,.72)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <span style="font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.38);">{{ wl1 }}</span>
+      </div>
+
+      <!-- Arrow 1 -->
+      <div style="display:flex;align-items:center;margin-bottom:20px;flex-shrink:0;">
+        <div style="width:36px;height:1px;background:rgba(230,220,160,.12);position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to right,transparent,#E6DCA0,transparent);animation:flowLine 1.8s linear infinite;"></div>
+        </div>
+        <div style="width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid rgba(230,220,160,.45);flex-shrink:0;"></div>
+      </div>
+
+      <!-- Node: ТЁПЛЫЙ ЛИД (pulsing gold) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:7px;position:relative;flex-shrink:0;">
+        <div style="position:absolute;width:52px;height:52px;border-radius:50%;border:1px solid rgba(230,220,160,.5);animation:ping 2.6s ease-out infinite;top:0;left:0;"></div>
+        <div style="position:absolute;width:52px;height:52px;border-radius:50%;border:1px solid rgba(230,220,160,.28);animation:ping 2.6s ease-out infinite;animation-delay:.9s;top:0;left:0;"></div>
+        <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid #E6DCA0;background:rgba(230,220,160,.13);box-shadow:0 0 22px rgba(230,220,160,.45),0 0 44px rgba(230,220,160,.14);display:flex;align-items:center;justify-content:center;position:relative;z-index:1;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#E6DCA0" stroke-width="1.5" stroke-linecap="round"/><circle cx="9" cy="7" r="4" stroke="#E6DCA0" stroke-width="1.5"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#E6DCA0" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <span style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#E6DCA0;white-space:nowrap;">{{ wl2 }}</span>
+      </div>
+
+      <!-- Arrow 2 (green) -->
+      <div style="display:flex;align-items:center;margin-bottom:20px;flex-shrink:0;">
+        <div style="width:36px;height:1px;background:rgba(100,220,130,.12);position:relative;overflow:hidden;">
+          <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to right,transparent,rgba(100,230,140,.9),transparent);animation:flowLine 1.8s linear infinite;animation-delay:.55s;"></div>
+        </div>
+        <div style="width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid rgba(100,220,130,.55);flex-shrink:0;"></div>
+      </div>
+
+      <!-- Node: СДЕЛКА -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:7px;flex-shrink:0;">
+        <div style="width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(100,220,130,.65);background:rgba(50,180,80,.12);box-shadow:0 0 16px rgba(80,200,100,.28);display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12" stroke="rgba(100,235,145,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(100,220,130,.75);">{{ wl3 }}</span>
+      </div>
+
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="reveal d5" style="margin-top:44px;display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <span style="font-size:9px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.2);">{{ scrollTxt }}</span>
+      <div style="width:1px;height:32px;background:linear-gradient(to bottom,rgba(230,220,160,.5),transparent);animation:bounce 2.2s ease infinite;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BLOCK 01: MIRROR ═══ -->
+<section id="mirror" style="position:relative;z-index:1;padding:80px 40px;" class="sec">
+  <div style="max-width:1080px;margin:0 auto;">
+    <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+      <span style="display:block;width:34px;height:1px;background:#E6DCA0;opacity:.4;"></span>
+      <span style="font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#E6DCA0;opacity:.58;">01</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;" class="g2">
+      <div>
+        <h2 class="sh reveal" style="font-size:42px;font-weight:700;line-height:1.1;letter-spacing:-.015em;color:#fff;">{{ m1h }}</h2>
+        <div class="reveal d1" style="margin-top:10px;width:48px;height:2px;background:#E6DCA0;opacity:.52;"></div>
+      </div>
+      <div style="padding-top:4px;">
+        <p class="reveal d1" style="font-size:17px;font-weight:300;line-height:1.78;color:rgba(255,255,255,.75);">{{ m1p1 }}</p>
+        <p class="reveal d2" style="font-size:17px;font-weight:300;line-height:1.78;color:rgba(255,255,255,.72);margin-top:16px;">{{ m1p2 }}</p>
+        <div class="reveal d3" style="margin-top:22px;padding:18px 22px;border-left:2px solid rgba(230,220,160,.38);background:rgba(28,53,94,.2);border-radius:0 10px 10px 0;">
+          <p style="font-size:16px;font-weight:400;line-height:1.68;color:rgba(255,255,255,.62);">{{ m1q }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BLOCK 02: DIAGNOSIS ═══ -->
+<section id="diagnosis" style="position:relative;z-index:1;padding:80px 40px;" class="sec">
+  <div style="max-width:1080px;margin:0 auto;">
+    <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+      <span style="display:block;width:34px;height:1px;background:#E6DCA0;opacity:.4;"></span>
+      <span style="font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#E6DCA0;opacity:.58;">02</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr auto;gap:48px;align-items:start;" class="g2">
+      <div>
+        <h2 class="sh reveal d1" style="font-size:42px;font-weight:700;line-height:1.1;letter-spacing:-.015em;color:#fff;max-width:460px;">{{ d1h }}</h2>
+        <p class="reveal d2" style="margin-top:10px;font-size:16px;font-weight:300;color:rgba(255,255,255,.62);max-width:380px;">{{ d1sub }}</p>
+
+        <div class="reveal d2" style="margin-top:36px;border:1px solid rgba(230,220,160,.1);border-radius:14px;overflow:hidden;background:rgba(28,53,94,.15);">
+          <div style="display:grid;grid-template-columns:1fr 1fr;padding:12px 26px;border-bottom:1px solid rgba(230,220,160,.07);background:rgba(230,220,160,.04);">
+            <span style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(230,220,160,.42);">{{ dth1 }}</span>
+            <span style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(230,220,160,.42);">{{ dth2 }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;padding:17px 26px;border-bottom:1px solid rgba(255,255,255,.04);">
+            <span style="font-size:15px;font-weight:500;color:rgba(255,255,255,.82);">{{ dr1a }}</span>
+            <span style="font-size:14px;font-weight:300;color:rgba(255,255,255,.62);">{{ dr1b }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;padding:17px 26px;border-bottom:1px solid rgba(255,255,255,.04);background:rgba(28,53,94,.1);">
+            <span style="font-size:15px;font-weight:500;color:rgba(255,255,255,.82);">{{ dr2a }}</span>
+            <span style="font-size:14px;font-weight:300;color:rgba(255,255,255,.62);">{{ dr2b }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;padding:17px 26px;border-bottom:1px solid rgba(255,255,255,.04);">
+            <span style="font-size:15px;font-weight:500;color:rgba(255,255,255,.82);">{{ dr3a }}</span>
+            <span style="font-size:14px;font-weight:300;color:rgba(255,255,255,.62);">{{ dr3b }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;padding:19px 26px;background:rgba(230,220,160,.06);border-left:2px solid #E6DCA0;">
+            <div><div style="font-size:15px;font-weight:700;color:#E6DCA0;">{{ dr4a }}</div><div style="font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(230,220,160,.45);margin-top:4px;">{{ dr4tag }}</div></div>
+            <div><div style="font-size:14px;font-weight:400;color:rgba(255,255,255,.7);">{{ dr4b }}</div><div style="margin-top:5px;font-size:12px;font-weight:300;color:rgba(255,255,255,.4);">{{ dr4c }}</div></div>
+          </div>
+        </div>
+
+        <div class="reveal d3" style="margin-top:28px;">
+          <p style="font-size:19px;font-weight:400;line-height:1.62;color:rgba(255,255,255,.78);">{{ d1con1 }}</p>
+          <p style="margin-top:12px;font-size:15px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.52);">{{ d1con2 }}</p>
+        </div>
+      </div>
+
+      <!-- Bar chart (desktop) -->
+      <div class="reveal d3 hm" style="width:150px;padding-top:16px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:18px;">{{ d1vis }}</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px;color:rgba(255,255,255,.45);">{{ dr1a }}<span>40%</span></div><div style="height:5px;background:rgba(28,53,94,.4);border-radius:3px;overflow:hidden;"><div style="height:100%;width:40%;background:rgba(230,220,160,.3);border-radius:3px;"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px;color:rgba(255,255,255,.45);">{{ dr2a }}<span>30%</span></div><div style="height:5px;background:rgba(28,53,94,.4);border-radius:3px;overflow:hidden;"><div style="height:100%;width:30%;background:rgba(230,220,160,.3);border-radius:3px;"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px;color:rgba(255,255,255,.45);">{{ dr3a }}<span>25%</span></div><div style="height:5px;background:rgba(28,53,94,.4);border-radius:3px;overflow:hidden;"><div style="height:100%;width:25%;background:rgba(230,220,160,.3);border-radius:3px;"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px;color:#E6DCA0;">{{ dr4a }}<span>5%</span></div><div style="height:5px;background:rgba(28,53,94,.4);border-radius:3px;overflow:hidden;"><div style="height:100%;width:5%;background:#E6DCA0;border-radius:3px;"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS (flow scheme) ═══ -->
+<section id="how-it-works" style="position:relative;z-index:1;padding:80px 40px;overflow:hidden;" class="sec">
+
+  <!-- Tactical grid overlay (like reference image) -->
+  <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;">
+    <svg width="100%" height="100%" style="opacity:.03;" preserveAspectRatio="none">
+      <defs><pattern id="tg" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse"><line x1="80" y1="0" x2="80" y2="80" stroke="#E6DCA0" stroke-width="0.5"/><line x1="0" y1="80" x2="80" y2="80" stroke="#E6DCA0" stroke-width="0.5"/></pattern></defs>
+      <rect width="100%" height="100%" fill="url(#tg)"/>
+    </svg>
+    <div style="position:absolute;top:18px;left:18px;width:18px;height:18px;border-top:1px solid rgba(230,220,160,.22);border-left:1px solid rgba(230,220,160,.22);"></div>
+    <div style="position:absolute;top:18px;right:18px;width:18px;height:18px;border-top:1px solid rgba(230,220,160,.22);border-right:1px solid rgba(230,220,160,.22);"></div>
+    <div style="position:absolute;bottom:18px;left:18px;width:18px;height:18px;border-bottom:1px solid rgba(230,220,160,.22);border-left:1px solid rgba(230,220,160,.22);"></div>
+    <div style="position:absolute;bottom:18px;right:18px;width:18px;height:18px;border-bottom:1px solid rgba(230,220,160,.22);border-right:1px solid rgba(230,220,160,.22);"></div>
+    <span style="position:absolute;top:22px;left:24px;font-size:9px;font-weight:700;letter-spacing:.14em;color:rgba(230,220,160,.2);">{{ howClassified }}</span>
+  </div>
+
+  <div style="max-width:1080px;margin:0 auto;position:relative;z-index:1;">
+    <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+      <span style="display:block;width:34px;height:1px;background:#E6DCA0;opacity:.4;"></span>
+      <span style="font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#E6DCA0;opacity:.58;">03</span>
+    </div>
+    <h2 class="sh reveal d1" style="font-size:42px;font-weight:700;line-height:1.1;letter-spacing:-.015em;color:#fff;">{{ howh }}</h2>
+    <p class="reveal d2" style="margin-top:10px;font-size:17px;font-weight:300;color:rgba(255,255,255,.65);max-width:520px;">{{ howsub }}</p>
+
+    <!-- Flow: desktop horizontal, mobile vertical -->
+    <div class="flow-wrap reveal d2" style="margin-top:52px;gap:0;">
+
+      <!-- Step 1: Тёплый лид (amber) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;flex:1;text-align:center;padding:0 8px;">
+        <div style="width:86px;height:86px;border-radius:14px;border:1.5px solid rgba(220,155,40,.65);background:rgba(180,110,20,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 18px rgba(220,155,40,.12);">
+          <svg width="38" height="44" viewBox="0 0 38 44" fill="none"><path d="M6 4H23L34 15V40H6V4Z" stroke="rgba(230,160,50,.88)" stroke-width="1.5" stroke-linejoin="round"/><path d="M23 4V15H34" stroke="rgba(230,160,50,.88)" stroke-width="1.5"/><path d="M13 24L25 36M25 24L13 36" stroke="rgba(230,160,50,.88)" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:#fff;">{{ how1 }}</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(255,255,255,.62);margin-top:5px;line-height:1.55;">{{ how1s }}</div>
+        </div>
+      </div>
+
+      <!-- Arrow H/V -->
+      <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 4px;">
+        <!-- Horizontal (desktop) -->
+        <div class="hm" style="display:flex;align-items:center;margin-bottom:28px;">
+          <div style="width:28px;height:1px;background:rgba(220,155,40,.35);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to right,transparent,rgba(230,160,50,.9),transparent);animation:flowLine 2s linear infinite;"></div></div>
+          <div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid rgba(220,155,40,.7);"></div>
+        </div>
+        <!-- Vertical (mobile) -->
+        <div class="hd" style="margin:8px 0;display:flex;flex-direction:column;align-items:center;gap:0;">
+          <div style="width:1px;height:22px;background:rgba(220,155,40,.35);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent,rgba(230,160,50,.9),transparent);animation:flowLine 2s linear infinite;"></div></div>
+          <div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid rgba(220,155,40,.7);"></div>
+        </div>
+      </div>
+
+      <!-- Step 2: Передача (gold) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;flex:1;text-align:center;padding:0 8px;">
+        <div style="width:86px;height:86px;border-radius:50%;border:1.5px solid rgba(230,220,160,.52);background:rgba(230,220,160,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="44" height="34" viewBox="0 0 44 34" fill="none"><path d="M2 22l8 8h10l16-14-4-4-8 4H16l-6-4-8 6z" stroke="rgba(230,220,160,.85)" stroke-width="1.5" stroke-linejoin="round"/><path d="M14 30l8-8" stroke="rgba(230,220,160,.65)" stroke-width="1.5" stroke-linecap="round"/><path d="M30 14l6-6" stroke="rgba(230,220,160,.65)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:#fff;">{{ how2 }}</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(255,255,255,.62);margin-top:5px;line-height:1.55;">{{ how2s }}</div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 4px;">
+        <div class="hm" style="display:flex;align-items:center;margin-bottom:28px;">
+          <div style="width:28px;height:1px;background:rgba(100,220,130,.3);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to right,transparent,rgba(100,220,130,.9),transparent);animation:flowLine 2s linear infinite;animation-delay:.5s;"></div></div>
+          <div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid rgba(100,220,130,.7);"></div>
+        </div>
+        <div class="hd" style="margin:8px 0;display:flex;flex-direction:column;align-items:center;">
+          <div style="width:1px;height:22px;background:rgba(100,220,130,.3);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent,rgba(100,220,130,.9),transparent);animation:flowLine 2s linear infinite;animation-delay:.5s;"></div></div>
+          <div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid rgba(100,220,130,.7);"></div>
+        </div>
+      </div>
+
+      <!-- Step 3: Эксперты (white) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;flex:1;text-align:center;padding:0 8px;">
+        <div style="width:86px;height:86px;border-radius:50%;border:1.5px solid rgba(255,255,255,.26);background:rgba(28,53,94,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="44" height="36" viewBox="0 0 44 36" fill="none"><circle cx="22" cy="8" r="5" stroke="rgba(255,255,255,.78)" stroke-width="1.5"/><path d="M10 34c0-6.63 5.37-12 12-12s12 5.37 12 12" stroke="rgba(255,255,255,.78)" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="10" r="3.5" stroke="rgba(255,255,255,.42)" stroke-width="1.5"/><path d="M1 34c0-3.87 2.69-7 6-7" stroke="rgba(255,255,255,.42)" stroke-width="1.5" stroke-linecap="round"/><circle cx="37" cy="10" r="3.5" stroke="rgba(255,255,255,.42)" stroke-width="1.5"/><path d="M43 34c0-3.87-2.69-7-6-7" stroke="rgba(255,255,255,.42)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:#fff;">{{ how3 }}</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(255,255,255,.62);margin-top:5px;line-height:1.55;">{{ how3s }}</div>
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <div style="display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0 4px;">
+        <div class="hm" style="display:flex;align-items:center;margin-bottom:28px;">
+          <div style="width:28px;height:1px;background:rgba(100,220,130,.3);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to right,transparent,rgba(100,220,130,.9),transparent);animation:flowLine 2s linear infinite;animation-delay:1s;"></div></div>
+          <div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid rgba(100,220,130,.7);"></div>
+        </div>
+        <div class="hd" style="margin:8px 0;display:flex;flex-direction:column;align-items:center;">
+          <div style="width:1px;height:22px;background:rgba(100,220,130,.3);position:relative;overflow:hidden;"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,transparent,rgba(100,220,130,.9),transparent);animation:flowLine 2s linear infinite;animation-delay:1s;"></div></div>
+          <div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid rgba(100,220,130,.7);"></div>
+        </div>
+      </div>
+
+      <!-- Step 4: Сделка (green) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px;flex:1;text-align:center;padding:0 8px;">
+        <div style="width:86px;height:86px;border-radius:50%;border:1.5px solid rgba(100,220,130,.72);background:rgba(50,180,80,.12);box-shadow:0 0 22px rgba(80,200,100,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><polyline points="8 19 16 27 30 11" stroke="rgba(100,235,145,.95)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:#fff;">{{ how4 }}</div>
+          <div style="font-size:13px;font-weight:300;color:rgba(100,220,130,.72);margin-top:5px;line-height:1.55;">{{ how4s }}</div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="reveal d3" style="margin-top:40px;font-size:16px;font-weight:300;color:rgba(255,255,255,.45);text-align:center;letter-spacing:.06em;">{{ hownote }}</p>
+  </div>
+</section>
+
+<!-- ═══ BLOCK 04: QUIZ ═══ -->
+<section id="quiz" style="position:relative;z-index:1;padding:80px 40px;" class="sec">
+  <div style="max-width:700px;margin:0 auto;">
+    <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+      <span style="display:block;width:34px;height:1px;background:#E6DCA0;opacity:.4;"></span>
+      <span style="font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#E6DCA0;opacity:.58;">04</span>
+    </div>
+    <h2 class="sh reveal d1" style="font-size:40px;font-weight:700;line-height:1.1;letter-spacing:-.015em;color:#fff;">{{ qzh }}</h2>
+    <p class="reveal d2" style="margin-top:10px;font-size:16px;font-weight:300;color:rgba(255,255,255,.62);">{{ qzsub }}</p>
+
+    <!-- Progress -->
+    <div class="reveal d2" style="margin-top:28px;margin-bottom:32px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28);">{{ progLbl }}</span>
+        <span style="font-size:12px;font-weight:600;color:rgba(230,220,160,.6);">{{ quizProg }}</span>
+      </div>
+      <div style="height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;">
+        <div style="height:100%;background:#E6DCA0;border-radius:2px;transition:width .65s cubic-bezier(.22,1,.36,1);width:{{ quizProgW }};"></div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div style="background:rgba(28,53,94,.22);border:1px solid rgba(230,220,160,.1);border-radius:14px;padding:26px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(230,220,160,.55);margin-bottom:13px;">{{ q1lbl }}</div>
+      <p style="font-size:16px;font-weight:500;line-height:1.52;color:#fff;margin-bottom:20px;">{{ q1txt }}</p>
+      <div style="display:flex;flex-direction:column;gap:9px;">
+        <button class="{{ q1o0 }}" onClick="{{ sq10 }}" disabled="{{ q1d }}">{{ q1a0 }}</button>
+        <button class="{{ q1o1 }}" onClick="{{ sq11 }}" disabled="{{ q1d }}">{{ q1a1 }}</button>
+        <button class="{{ q1o2 }}" onClick="{{ sq12 }}" disabled="{{ q1d }}">{{ q1a2 }}</button>
+        <button class="{{ q1o3 }}" onClick="{{ sq13 }}" disabled="{{ q1d }}">{{ q1a3 }}</button>
+      </div>
+    </div>
+
+    <sc-if value="{{ q1ok }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:fadeUp .6s cubic-bezier(.22,1,.36,1);">
+        <div style="margin-top:12px;padding:15px 19px;background:rgba(230,220,160,.07);border-left:2px solid #E6DCA0;border-radius:0 8px 8px 0;">
+          <p style="font-size:14px;font-weight:400;line-height:1.62;color:#E6DCA0;">{{ q1r }}</p>
+        </div>
+        <div style="margin-top:22px;background:rgba(28,53,94,.22);border:1px solid rgba(230,220,160,.1);border-radius:14px;padding:26px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(230,220,160,.55);margin-bottom:13px;">{{ q2lbl }}</div>
+          <p style="font-size:16px;font-weight:500;line-height:1.52;color:#fff;margin-bottom:20px;">{{ q2txt }}</p>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <button class="{{ q2o0 }}" onClick="{{ sq20 }}" disabled="{{ q2d }}">{{ q2a0 }}</button>
+            <button class="{{ q2o1 }}" onClick="{{ sq21 }}" disabled="{{ q2d }}">{{ q2a1 }}</button>
+            <button class="{{ q2o2 }}" onClick="{{ sq22 }}" disabled="{{ q2d }}">{{ q2a2 }}</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ q2ok }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:fadeUp .6s cubic-bezier(.22,1,.36,1);">
+        <div style="margin-top:12px;padding:15px 19px;background:rgba(230,220,160,.07);border-left:2px solid #E6DCA0;border-radius:0 8px 8px 0;">
+          <p style="font-size:14px;font-weight:400;line-height:1.62;color:#E6DCA0;">{{ q2r }}</p>
+        </div>
+        <div style="margin-top:22px;background:rgba(28,53,94,.22);border:1px solid rgba(230,220,160,.1);border-radius:14px;padding:26px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(230,220,160,.55);margin-bottom:13px;">{{ q3lbl }}</div>
+          <p style="font-size:16px;font-weight:500;line-height:1.52;color:#fff;margin-bottom:20px;">{{ q3txt }}</p>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <button class="{{ q3o0 }}" onClick="{{ sq30 }}" disabled="{{ q3d }}">{{ q3a0 }}</button>
+            <button class="{{ q3o1 }}" onClick="{{ sq31 }}" disabled="{{ q3d }}">{{ q3a1 }}</button>
+            <button class="{{ q3o2 }}" onClick="{{ sq32 }}" disabled="{{ q3d }}">{{ q3a2 }}</button>
+            <button class="{{ q3o3 }}" onClick="{{ sq33 }}" disabled="{{ q3d }}">{{ q3a3 }}</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ q3ok }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:fadeUp .6s cubic-bezier(.22,1,.36,1);">
+        <div style="margin-top:12px;padding:15px 19px;background:rgba(230,220,160,.07);border-left:2px solid #E6DCA0;border-radius:0 8px 8px 0;">
+          <p style="font-size:14px;font-weight:400;line-height:1.62;color:#E6DCA0;">{{ q3r }}</p>
+        </div>
+        <div style="margin-top:26px;padding:28px 24px;background:rgba(28,53,94,.3);border:1px solid rgba(230,220,160,.22);border-radius:14px;text-align:center;">
+          <p style="font-size:18px;font-weight:400;line-height:1.68;color:#fff;">{{ qfin1 }}<br><span style="color:#E6DCA0;font-weight:700;">{{ qfin2 }}</span></p>
+          <p style="margin-top:10px;font-size:14px;font-weight:300;color:rgba(255,255,255,.48);">{{ qfin3 }}</p>
+          <a href="#calculator" style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:12px 26px;background:rgba(230,220,160,.1);border:1px solid rgba(230,220,160,.38);border-radius:8px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E6DCA0;">{{ qfinBtn }} <svg width="12" height="9" viewBox="0 0 14 10" fill="none"><path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</section>
+
+<!-- ═══ BLOCK 05: CALCULATOR ═══ -->
+<section id="calculator" style="position:relative;z-index:1;padding:80px 40px;" class="sec">
+  <div style="max-width:720px;margin:0 auto;">
+    <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+      <span style="display:block;width:34px;height:1px;background:#E6DCA0;opacity:.4;"></span>
+      <span style="font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#E6DCA0;opacity:.58;">05</span>
+    </div>
+    <h2 class="sh reveal d1" style="font-size:40px;font-weight:700;line-height:1.1;letter-spacing:-.015em;color:#fff;">{{ calch }}</h2>
+    <p class="reveal d2" style="margin-top:10px;font-size:16px;font-weight:300;color:rgba(255,255,255,.55);">{{ calcsub }}</p>
+
+    <div class="reveal d2" style="margin-top:32px;background:rgba(28,53,94,.22);border:1px solid rgba(230,220,160,.1);border-radius:14px;padding:28px;">
+      <div style="margin-bottom:26px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:13px;">{{ calcbl1 }}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="{{ b0 }}" onClick="{{ sb0 }}">$80k</button>
+          <button class="{{ b1 }}" onClick="{{ sb1 }}">$120k</button>
+          <button class="{{ b2 }}" onClick="{{ sb2 }}">$180k</button>
+          <button class="{{ b3 }}" onClick="{{ sb3 }}">$250k+</button>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:13px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.38);">{{ calcbl2 }}</div>
+          <div style="font-size:26px;font-weight:800;color:#E6DCA0;line-height:1;">{{ clients }}</div>
+        </div>
+        <input type="range" min="1" max="20" value="{{ clients }}" onInput="{{ setClients }}" class="cslider" />
+        <div style="display:flex;justify-content:space-between;margin-top:6px;"><span style="font-size:11px;color:rgba(255,255,255,.24);">1</span><span style="font-size:11px;color:rgba(255,255,255,.24);">20</span></div>
+      </div>
+    </div>
+
+    <div class="reveal d3" style="margin-top:12px;background:rgba(28,53,94,.3);border:1px solid rgba(230,220,160,.22);border-radius:14px;padding:28px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:radial-gradient(circle,rgba(230,220,160,.07) 0%,transparent 70%);pointer-events:none;"></div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:5px;">{{ calcPot }}</div>
+      <div style="font-size:12px;font-weight:300;color:rgba(255,255,255,.42);margin-bottom:10px;">{{ calcFor }} {{ clients }} {{ clLabel }}</div>
+      <div style="font-size:52px;font-weight:900;letter-spacing:-.025em;color:#E6DCA0;line-height:1;">${{ commUSD }}</div>
+
+      <div style="display:flex;gap:32px;margin-top:20px;flex-wrap:wrap;">
+        <div><div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.26);margin-bottom:5px;">{{ inThb }}</div><div style="font-size:19px;font-weight:600;color:rgba(255,255,255,.8);">{{ commTHB }}&nbsp;฿</div></div>
+        <div><div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.26);margin-bottom:5px;">{{ inRub }}</div><div style="font-size:19px;font-weight:600;color:rgba(255,255,255,.8);">{{ commRUB }}&nbsp;₽</div></div>
+        <div><div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.26);margin-bottom:5px;">{{ rateLbl }}</div><div style="font-size:11px;font-weight:400;color:rgba(255,255,255,.32);margin-top:6px;">{{ rateNote }}</div></div>
+      </div>
+
+      <div style="margin:20px 0;height:1px;background:rgba(255,255,255,.06);"></div>
+
+      <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.26);margin-bottom:11px;">{{ perClLbl }}</div>
+      <div style="display:grid;grid-template-columns:1fr auto;gap:7px 20px;max-width:320px;">
+        <span style="font-size:13px;font-weight:300;color:rgba(255,255,255,.55);">{{ calcR1a }}</span><span style="font-size:13px;font-weight:500;color:rgba(255,255,255,.72);text-align:right;">${{ selBudget }}</span>
+        <span style="font-size:13px;font-weight:600;color:rgba(230,220,160,.82);">{{ calcR2a }}</span><span style="font-size:13px;font-weight:700;color:#E6DCA0;text-align:right;">${{ perCl }}</span>
+      </div>
+    </div>
+    <p class="reveal d4" style="margin-top:18px;font-size:13px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.32);text-align:center;">{{ calcNote }}</p>
+  </div>
+</section>
+
+<!-- ═══ BLOCK 06: ZERO LOSSES ═══ -->
+<section id="zero" style="position:relative;z-index:1;padding:80px 40px;" class="sec">
+  <div style="max-width:1080px;margin:0 auto;">
+    <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+      <span style="display:block;width:34px;height:1px;background:#E6DCA0;opacity:.4;"></span>
+      <span style="font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#E6DCA0;opacity:.58;">06</span>
+    </div>
+    <h2 class="sh reveal d1" style="font-size:40px;font-weight:700;line-height:1.1;letter-spacing:-.015em;color:#fff;max-width:480px;">{{ zlh }}</h2>
+
+    <div class="reveal d2" style="margin-top:36px;border:1px solid rgba(230,220,160,.1);border-radius:14px;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;background:rgba(28,53,94,.22);">
+        <div style="padding:12px 24px;border-right:1px solid rgba(230,220,160,.07);"><span style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.28);">{{ zlth1 }}</span></div>
+        <div style="padding:12px 24px;"><span style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(230,220,160,.52);">{{ zlth2 }}</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(255,255,255,.04);" class="dtrow">
+        <div class="dtfear" style="padding:16px 24px;border-right:1px solid rgba(255,255,255,.04);"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.42);line-height:1.55;">{{ zl1f }}</p></div>
+        <div style="padding:16px 24px;"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.82);line-height:1.55;">{{ zl1r }}</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(255,255,255,.04);background:rgba(28,53,94,.1);" class="dtrow">
+        <div class="dtfear" style="padding:16px 24px;border-right:1px solid rgba(255,255,255,.04);"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.42);line-height:1.55;">{{ zl2f }}</p></div>
+        <div style="padding:16px 24px;"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.82);line-height:1.55;">{{ zl2r }}</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(255,255,255,.04);" class="dtrow">
+        <div class="dtfear" style="padding:16px 24px;border-right:1px solid rgba(255,255,255,.04);"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.42);line-height:1.55;">{{ zl3f }}</p></div>
+        <div style="padding:16px 24px;"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.82);line-height:1.55;">{{ zl3r }}</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(255,255,255,.04);background:rgba(28,53,94,.1);" class="dtrow">
+        <div class="dtfear" style="padding:16px 24px;border-right:1px solid rgba(255,255,255,.04);"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.42);line-height:1.55;">{{ zl4f }}</p></div>
+        <div style="padding:16px 24px;"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.82);line-height:1.55;">{{ zl4r }}</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(255,255,255,.04);" class="dtrow">
+        <div class="dtfear" style="padding:16px 24px;border-right:1px solid rgba(255,255,255,.04);"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.42);line-height:1.55;">{{ zl5f }}</p></div>
+        <div style="padding:16px 24px;"><p style="font-size:14px;font-weight:400;color:rgba(255,255,255,.82);line-height:1.55;">{{ zl5r }}</p></div>
+      </div>
+    </div>
+
+    <div class="reveal d3" style="margin-top:36px;text-align:center;">
+      <p style="font-size:22px;font-weight:600;color:#fff;line-height:1.4;">{{ zlcon1 }}</p>
+      <p style="margin-top:9px;font-size:16px;font-weight:300;color:rgba(255,255,255,.52);">{{ zlcon2 }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BLOCK 07: CASES ═══ -->
+<section id="cases" style="position:relative;z-index:1;padding:80px 40px;" class="sec">
+  <div style="max-width:1080px;margin:0 auto;">
+    <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+      <span style="display:block;width:34px;height:1px;background:#E6DCA0;opacity:.4;"></span>
+      <span style="font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#E6DCA0;opacity:.58;">07</span>
+    </div>
+    <h2 class="sh reveal d1" style="font-size:40px;font-weight:700;line-height:1.1;letter-spacing:-.015em;color:#fff;">{{ csh }}</h2>
+    <p class="reveal d2" style="margin-top:10px;font-size:16px;font-weight:300;color:rgba(255,255,255,.55);">{{ cssub }}</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:36px;" class="g3">
+      <div class="reveal d2" style="background:rgba(28,53,94,.2);border:1px solid rgba(230,220,160,.1);border-radius:14px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;min-height:250px;">
+        <div><div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(230,220,160,.45);margin-bottom:14px;">{{ cs1tag }}</div><p style="font-size:14px;font-weight:300;line-height:1.72;color:rgba(255,255,255,.7);">{{ cs1txt }}</p></div>
+        <div style="margin-top:20px;padding-top:14px;border-top:1px solid rgba(230,220,160,.1);"><div style="font-size:26px;font-weight:800;color:#E6DCA0;letter-spacing:-.01em;">{{ cs1num }}</div><div style="font-size:11px;font-weight:400;color:rgba(255,255,255,.38);margin-top:3px;">{{ cs1sub }}</div></div>
+      </div>
+      <div class="reveal d3" style="background:rgba(28,53,94,.26);border:1px solid rgba(230,220,160,.2);border-radius:14px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;min-height:250px;">
+        <div><div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(230,220,160,.45);margin-bottom:14px;">{{ cs2tag }}</div><p style="font-size:14px;font-weight:300;line-height:1.72;color:rgba(255,255,255,.7);">{{ cs2txt }}</p></div>
+        <div style="margin-top:20px;padding-top:14px;border-top:1px solid rgba(230,220,160,.12);"><div style="font-size:26px;font-weight:800;color:#E6DCA0;letter-spacing:-.01em;">{{ cs2num }}</div><div style="font-size:11px;font-weight:400;color:rgba(255,255,255,.38);margin-top:3px;">{{ cs2sub }}</div></div>
+      </div>
+      <div class="reveal d4" style="background:rgba(28,53,94,.2);border:1px solid rgba(230,220,160,.1);border-radius:14px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;min-height:250px;">
+        <div><div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(230,220,160,.45);margin-bottom:14px;">{{ cs3tag }}</div><p style="font-size:14px;font-weight:300;line-height:1.72;color:rgba(255,255,255,.7);">{{ cs3txt }}</p></div>
+        <div style="margin-top:20px;padding-top:14px;border-top:1px solid rgba(230,220,160,.1);"><div style="font-size:26px;font-weight:800;color:#E6DCA0;letter-spacing:-.01em;">{{ cs3num }}</div><div style="font-size:11px;font-weight:400;color:rgba(255,255,255,.38);margin-top:3px;">{{ cs3sub }}</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BLOCK 08: STATE — CINEMATIC TIMELINE ═══ -->
+<section id="state" style="position:relative;z-index:1;padding:80px 40px;overflow:hidden;" class="sec">
+
+  <!-- Animated flowing lines background -->
+  <div style="position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.055;">
+    <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+      <path d="M0 300C200 200 400 400 600 300S1000 200 1200 300" fill="none" stroke="#E6DCA0" stroke-width="1" stroke-dasharray="10 18" style="animation:lineDash 9s linear infinite;"/>
+      <path d="M0 350C300 250 500 450 700 350S1000 250 1200 350" fill="none" stroke="#E6DCA0" stroke-width="1" stroke-dasharray="7 22" style="animation:lineDash 13s linear infinite;animation-delay:-3s;"/>
+      <circle cx="200" cy="300" r="4" fill="#E6DCA0" style="animation:shimmer 3s ease infinite;"/>
+      <circle cx="600" cy="300" r="4" fill="#E6DCA0" style="animation:shimmer 3s ease infinite;animation-delay:-1.5s;"/>
+      <circle cx="1000" cy="300" r="4" fill="#E6DCA0" style="animation:shimmer 3s ease infinite;animation-delay:-1s;"/>
+    </svg>
+  </div>
+
+  <div style="max-width:720px;margin:0 auto;position:relative;z-index:1;">
+    <div class="reveal" style="display:flex;align-items:center;gap:14px;margin-bottom:44px;">
+      <span style="display:block;width:34px;height:1px;background:#E6DCA0;opacity:.4;"></span>
+      <span style="font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#E6DCA0;opacity:.58;">08</span>
+    </div>
+    <h2 class="sh reveal d1" style="font-size:40px;font-weight:700;line-height:1.1;letter-spacing:-.015em;color:#fff;">{{ sttitle }}</h2>
+
+    <!-- Statement 01 -->
+    <div class="reveal d1" style="display:flex;gap:20px;margin-top:36px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+      <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:2px;">
+        <span style="font-size:10px;font-weight:800;letter-spacing:.2em;color:rgba(230,220,160,.45);">01</span>
+        <div style="flex:1;width:1px;background:linear-gradient(to bottom,rgba(230,220,160,.25),transparent);min-height:32px;"></div>
+      </div>
+      <div>
+        <p style="font-size:22px;font-weight:600;line-height:1.35;color:#fff;">{{ st1h }}</p>
+        <p style="font-size:15px;font-weight:300;line-height:1.68;color:rgba(255,255,255,.58);margin-top:7px;">{{ st1s }}</p>
+      </div>
+    </div>
+
+    <!-- Statement 02 -->
+    <div class="reveal d2" style="display:flex;gap:20px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+      <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:2px;">
+        <span style="font-size:10px;font-weight:800;letter-spacing:.2em;color:rgba(230,220,160,.45);">02</span>
+        <div style="flex:1;width:1px;background:linear-gradient(to bottom,rgba(230,220,160,.25),transparent);min-height:32px;"></div>
+      </div>
+      <div>
+        <p style="font-size:22px;font-weight:600;line-height:1.35;color:#fff;">{{ st2h }}</p>
+        <p style="font-size:15px;font-weight:300;line-height:1.68;color:rgba(255,255,255,.58);margin-top:7px;">{{ st2s }}</p>
+      </div>
+    </div>
+
+    <!-- Statement 03 -->
+    <div class="reveal d2" style="display:flex;gap:20px;padding:22px 0;border-bottom:1px solid rgba(255,255,255,.06);">
+      <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:2px;">
+        <span style="font-size:10px;font-weight:800;letter-spacing:.2em;color:rgba(230,220,160,.45);">03</span>
+        <div style="flex:1;width:1px;background:linear-gradient(to bottom,rgba(230,220,160,.25),transparent);min-height:32px;"></div>
+      </div>
+      <div>
+        <p style="font-size:22px;font-weight:600;line-height:1.35;color:#fff;">{{ st3h }}</p>
+        <p style="font-size:15px;font-weight:300;line-height:1.68;color:rgba(255,255,255,.58);margin-top:7px;">{{ st3s }}</p>
+      </div>
+    </div>
+
+    <!-- Statement 04 — HIGHLIGHT (money arrives) -->
+    <div class="reveal d3" style="display:flex;gap:20px;padding:22px 0 24px;border-bottom:1px solid rgba(255,255,255,.06);background:linear-gradient(to right,rgba(230,220,160,.04),transparent);border-radius:0 10px 10px 0;border-left:2px solid rgba(230,220,160,.38);padding-left:18px;margin-left:-20px;">
+      <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:2px;">
+        <span style="font-size:10px;font-weight:800;letter-spacing:.2em;color:#E6DCA0;">04</span>
+        <div style="flex:1;width:1px;background:linear-gradient(to bottom,rgba(230,220,160,.5),transparent);min-height:32px;"></div>
+      </div>
+      <div>
+        <p style="font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(230,220,160,.58);margin-bottom:8px;">{{ st4tag }}</p>
+        <p style="font-size:42px;font-weight:900;letter-spacing:-.025em;color:#E6DCA0;line-height:1;">{{ st4num }}</p>
+        <p style="font-size:15px;font-weight:300;line-height:1.68;color:rgba(255,255,255,.68);margin-top:8px;">{{ st4s }}</p>
+      </div>
+    </div>
+
+    <!-- Statement 05 -->
+    <div class="reveal d4" style="display:flex;gap:20px;padding:22px 0;">
+      <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:2px;">
+        <span style="font-size:10px;font-weight:800;letter-spacing:.2em;color:rgba(230,220,160,.45);">05</span>
+      </div>
+      <div>
+        <p style="font-size:22px;font-weight:600;line-height:1.35;color:#fff;">{{ st5h }}</p>
+        <p style="font-size:15px;font-weight:300;line-height:1.68;color:rgba(230,220,160,.62);margin-top:7px;">{{ st5s }}</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ BLOCK 09: ENTRY ═══ -->
+<section id="entry" style="position:relative;z-index:1;padding:90px 40px;text-align:center;" class="sec">
+  <div class="reveal" style="max-width:960px;margin:0 auto 60px;height:1px;background:linear-gradient(to right,transparent,rgba(230,220,160,.25),transparent);"></div>
+  <div style="max-width:560px;margin:0 auto;">
+    <div class="reveal" style="display:inline-flex;align-items:center;gap:12px;margin-bottom:28px;">
+      <span style="display:block;width:22px;height:1px;background:#E6DCA0;opacity:.35;"></span>
+      <span style="font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:#E6DCA0;opacity:.55;">09</span>
+      <span style="display:block;width:22px;height:1px;background:#E6DCA0;opacity:.35;"></span>
+    </div>
+    <h2 class="sh reveal d1" style="font-size:38px;font-weight:700;line-height:1.1;letter-spacing:-.015em;color:#fff;">{{ eth }}</h2>
+    <p class="reveal d2" style="margin-top:16px;font-size:17px;font-weight:300;line-height:1.72;color:rgba(255,255,255,.58);">{{ etsub }}</p>
+    <div class="reveal d3 cc" style="display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap;">
+      <div style="position:relative;display:inline-block;">
+        <div style="position:absolute;inset:-6px;border-radius:14px;border:1px solid rgba(230,220,160,.35);animation:ping 2.8s ease-out infinite;"></div>
+        <a href="https://t.me/+KRtzaV7lxOE5ZmQ1" target="_blank" style="display:inline-flex;align-items:center;gap:10px;padding:18px 38px;background:#E6DCA0;border-radius:8px;font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#0d1c38;transition:all .3s;border:1px solid #E6DCA0;box-shadow:0 0 32px rgba(230,220,160,.35),0 0 64px rgba(230,220,160,.12);position:relative;z-index:1;">
+          <svg width="14" height="13" viewBox="0 0 16 14" fill="none"><path d="M15.9 1.48L13.52 12.88C13.34 13.68 12.88 13.88 12.24 13.52L8.64 10.88L6.92 12.52C6.72 12.72 6.56 12.88 6.2 12.88L6.44 9.2L13.12 3.2C13.4 2.96 13.06 2.82 12.68 3.06L4.38 8.24L0.84 7.14C0.06 6.9 0.04 6.38 1 6.02L14.88 0.42C15.54 0.18 16.1 0.56 15.9 1.48Z" fill="currentColor"/></svg>
+          {{ etbtn1 }}
+        </a>
+      </div>
+    <a href="https://perm-real-data.lovable.app/" target="_blank" style="display:inline-flex;align-items:center;gap:7px;margin-top:16px;font-size:13px;font-weight:400;color:rgba(255,255,255,.42);letter-spacing:.04em;text-decoration:none;transition:color .25s;">
+      {{ etbtn2 }}
+      <svg width="11" height="8" viewBox="0 0 14 10" fill="none"><path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    </div>
+  </div>
+</section>
+
+<footer style="position:relative;z-index:1;padding:32px 40px;border-top:1px solid rgba(255,255,255,.05);">
+  <div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+    <img src="uploads/White.png" alt="IBG Property" style="height:22px;object-fit:contain;opacity:.48;" />
+    <span style="font-size:11px;font-weight:300;color:rgba(255,255,255,.2);">IBG Property © 2025</span>
+    <a href="#" style="font-size:11px;font-weight:500;letter-spacing:.06em;color:rgba(255,255,255,.22);" class="nlnk">{{ footerLink }}</a>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    q1:null, q2:null, q3:null,
+    clients:5, bIdx:2,
+    thb:36.5, rub:91.2, ratesOk:false,
+    menuOpen:false, lang:'ru',
+  };
+
+  B = [80000,120000,180000,250000];
+
+  T = {
+    ru:{
+      n:['Как это работает','Калькулятор','Кейсы','Партнёрство'],
+      n5:'Руководство',
+      langBtn:'EN',
+      badge:'Закрытая партнёрская программа',
+      ht1:'Ты только что увидел, как риелтор',
+      ht2:'получил $10\u202f500 с одного клиента',
+      hsub:'Дважды. За 14 месяцев.',
+      hbody:'Сейчас я покажу почему это работает. И почему у тебя есть то же самое — прямо сейчас.',
+      scrollTxt:'Скролл',
+      wl1:'Ты',wl2:'Тёплый лид',wl3:'от $3\u202f000+',
+      m1h:'Ты хороший специалист',
+      m1p1:'У тебя есть база. Ты закрываешь сделки.',
+      m1p2:'И каждый раз — с нуля. Новый клиент. Новый поиск. Новое доверие.',
+      m1q:'Это не твоя проблема. Это структура рынка, в которой ты работаешь.',
+      d1h:'Кто зарабатывает на каждой сделке',
+      d1sub:'Одна сделка. Четыре участника. Посмотри кто что получает.',
+      dth1:'Участник',dth2:'Зарабатывает',
+      dr1a:'Застройщик',dr1b:'На росте цены',
+      dr2a:'Инвестор',dr2b:'На перепродаже',
+      dr3a:'Банк',dr3b:'На процентах годами',
+      dr4a:'Риелтор',dr4tag:'это ты',dr4b:'Один раз. Потом — уходит.',dr4c:'Нет доли в результате.',
+      d1con1:'Ты единственный участник сделки, у которого нет доли в результате.',
+      d1con2:'Дело не в тебе. Дело в модели.',
+      d1vis:'Доля дохода',
+      howClassified:'Эффект кладбища лидов',
+      howh:'Как это работает',
+      howsub:'Каждый клиент которого ты считал потерянным — это готовая сделка.',
+      how1:'Тёплый лид',how1s:'Клиент из твоей базы, который интересовался',
+      how2:'Один контакт',how2s:'Один контакт с командой IBG Property',
+      how3:'Эксперты',how3s:'Показы, юристы, документы — всё на нас',
+      how4:'Сделка',how4s:'Комиссия через 5 дней после первоначального платежа',
+      hownote:'Ты не тратишь ни часа на сделку.',
+      qzh:'Давай проверим вместе',
+      qzsub:'Три вопроса. Отвечай честно — это только для тебя.',
+      progLbl:'Прогресс',
+      q1lbl:'Вопрос 01',
+      q1txt:'Сколько клиентов закрыл за последние два года, которые теоретически могли бы купить ещё раз?',
+      q1a:['Нет, таких ещё не было','1–5 человек','5–15 человек','15 и больше'],
+      q1r:['Отлично. Любой первый клиент с зарубежным запросом — уже работающая точка входа. Читай дальше.',
+           'Даже один повторный клиент — это $4\u202f200 и выше. Смотри дальше.',
+           'В твоей базе уже лежат минимум 2–3 сделки. Ты просто об этом не знаешь.',
+           'Ты сидишь на золоте. Серьёзно.'],
+      q2lbl:'Вопрос 02',
+      q2txt:'Твои клиенты когда-нибудь спрашивали про зарубежную недвижимость?',
+      q2a:['Да, спрашивали','Нет, не поднимали','Сам интересуюсь'],
+      q2r:['Значит спрос уже есть. Ты просто не зарабатывал на нём.',
+           'Большинство не спрашивают. Просто не знают что можно. Один вопрос от тебя — и тема открывается.',
+           'Тогда ты уже понимаешь о чём речь. Читай дальше.'],
+      q3lbl:'Вопрос 03',
+      q3txt:'Что останавливает прямо сейчас?',
+      q3a:['Не знаю рынок','Не понимаю юридику','Боюсь что клиент уйдёт напрямую','Ничего не останавливает'],
+      q3r:['Не нужно. Рынок знаем мы. Ты просто знакомишь клиента — всё остальное наша работа.',
+           'Все документы, сделка, регистрация — на нашей стороне. Полностью.',
+           'Клиент юридически фиксируется за тобой с первого контакта. Это прописано в договоре.',
+           'Тогда ты уже готов. Смотри расчёт ниже.'],
+      qfin1:'На основе твоих ответов — в твоей базе уже есть потенциал',
+      qfin2:'минимум на одну сделку',
+      qfin3:'Давай посчитаем сколько это в деньгах',
+      qfinBtn:'Посмотреть расчёт',
+      calch:'В твоей базе уже есть деньги',
+      calcsub:'Посмотри сколько',
+      calcbl1:'Средний бюджет клиента',
+      calcbl2:'Таких клиентов в базе',
+      calcPot:'Твой потенциал',
+      calcFor:'За',
+      inThb:'В батах',inRub:'В рублях',rateLbl:'Курс',
+      rateOk:'Актуальный курс',rateLoad:'Загрузка...',
+      perClLbl:'На одного клиента',
+      calcR1a:'Стоимость объекта',
+      calcR2a:'Твоя комиссия',
+      calcNote:'Это не прогноз. Это математика. Именно так работает расчёт по каждой сделке.',
+      clSfx:['клиента','клиентов','клиентов'],
+      zlh:'Что ты теряешь если попробуешь',
+      zlth1:'Страх',zlth2:'Реальность',
+      zl1:['Потеряю клиента','Клиент фиксируется за тобой юридически с первого контакта'],
+      zl2:['Нужно тратить время','Показы, документы, сделка — полностью наша сторона'],
+      zl3:['Нужно знать рынок','Не нужно. Для этого есть мы'],
+      zl4:['Долго ждать оплату','Выплата в течение 5 рабочих дней после закрытия'],
+      zl5:['Это разово','Клиент остаётся в системе — при повторной покупке ты снова получаешь комиссию'],
+      zlcon1:'Потери — ноль. Риски — ноль.',
+      zlcon2:'Твоя работа — познакомить. Наша — всё остальное.',
+      csh:'Реальные кейсы',
+      cssub:'Не отзывы. Короткие истории — только факты.',
+      cs1:['Кейс 01','Риелтор, Москва. 2024. Клиент из базы спросил про Таиланд. Познакомил с командой. Сделка за 6 недель.','$4\u202f200','Первая зарубежная. С нуля.'],
+      cs2:['Кейс 02','Брокер, Алматы. 3 клиента за год. Все из существующей базы. Ни одного нового лида не искал.','$19\u202f800','Три сделки. Один год.'],
+      cs3:['Кейс 03','Агентство, Екатеринбург. 2025. Клиент купил повторно — дороже. Повторная комиссия без дополнительной работы.','+$6\u202f300','Повтор. Без усилий.'],
+      sttitle:'Как это выглядит изнутри',
+      st1h:'Ты продолжаешь работать как сейчас',st1s:'Ничего не меняется в твоей работе.',
+      st2h:'Клиент говорит: «думаю про Таиланд»',st2s:'Ты не меняешь тему. Отправляешь один контакт.',
+      st3h:'Всё остальное происходит без тебя',st3s:'Показы, юридика, сделка — команда IBG.',
+      st4tag:'Через 5 дней после внесения платежа',st4s:'приходят на счёт. Без твоего участия.',
+      st5h:'Ты не вёл эту сделку',st5s:'Ты просто соединил.',
+      eth:'Если хочешь посмотреть изнутри',
+      etsub:'Закрытый Telegram-канал для партнёров. Реальные кейсы. Условия. Ответы на вопросы. Никакого спама.',
+      etbtn1:'Войти в канал',etbtn2:'Узнать условия',
+      footerLink:'Политика конфиденциальности',
+    },
+    en:{
+      n:['How it works','Calculator','Cases','Partnership'],
+      n5:'Guide',
+      langBtn:'RU',
+      badge:'Closed partner program',
+      ht1:'You just saw how a realtor',
+      ht2:'earned $10,500 from one client',
+      hsub:'Twice. In 14 months.',
+      hbody:"Now I'll show you why it works. And why you have the same opportunity — right now.",
+      scrollTxt:'Scroll',
+      wl1:'You',wl2:'Warm lead',wl3:'from $3,000+',
+      m1h:'You are a good professional',
+      m1p1:'You have a client base. You close deals.',
+      m1p2:'And every time — from scratch. New client. New search. New trust.',
+      m1q:"This is not your problem. It's the structure of the market you work in.",
+      d1h:'Who earns on every deal',
+      d1sub:'One deal. Four participants. See who gets what.',
+      dth1:'Participant',dth2:'Earns',
+      dr1a:'Developer',dr1b:'On price growth',
+      dr2a:'Investor',dr2b:'On resale',
+      dr3a:'Bank',dr3b:'On interest for years',
+      dr4a:'Realtor',dr4tag:"that's you",dr4b:'Once. Then — leaves.',dr4c:'No share in the result.',
+      d1con1:'You are the only participant in the deal with no share in the result.',
+      d1con2:"It's not about you. It's about the model.",
+      d1vis:'Revenue share',
+      howClassified:'The dead leads effect',
+      howh:'How it works',
+      howsub:'Every client you thought was lost — is a ready deal.',
+      how1:'Warm lead',how1s:'A client from your base who was interested',
+      how2:'One contact',how2s:'One contact with the IBG Property team',
+      how3:'Experts',how3s:'Viewings, lawyers, docs — all on us',
+      how4:'Deal',how4s:'Commission in 5 days after initial payment',
+      hownote:'You spend zero hours on the deal.',
+      qzh:"Let's check together",
+      qzsub:'Three questions. Answer honestly — this is just for you.',
+      progLbl:'Progress',
+      q1lbl:'Question 01',
+      q1txt:'How many clients did you close in the last two years who could theoretically buy again?',
+      q1a:["None yet — haven't had those",'1–5 clients','5–15 clients','15 or more'],
+      q1r:['Great. Any first client with an international request is already a working entry point. Read on.',
+           'Even one repeat client is $4,200+. Keep reading.',
+           "Your base already has at least 2–3 deals. You just don't know it yet.",
+           "You're sitting on gold. Seriously."],
+      q2lbl:'Question 02',
+      q2txt:'Have your clients ever asked about overseas property?',
+      q2a:['Yes, they asked',"No, they didn't bring it up",'I am interested myself'],
+      q2r:['The demand already exists. You just weren\'t earning from it.',
+           "Most don't ask. They just don't know they can. One question from you — and the topic opens.",
+           'Then you already understand what this is about. Read on.'],
+      q3lbl:'Question 03',
+      q3txt:"What's stopping you right now?",
+      q3a:["Don't know the market","Don't understand the legal side",'Afraid the client will go directly','Nothing is stopping me'],
+      q3r:["No need. We know the market. You just introduce the client — we do everything else.",
+           'All documents, deal, registration — fully on our side.',
+           "The client is legally registered to you from first contact. It's in the contract.",
+           "Then you're already ready. See the calculation below."],
+      qfin1:'Based on your answers — your base already has potential',
+      qfin2:'for at least one deal',
+      qfin3:"Let's calculate how much that is in money",
+      qfinBtn:'See calculation',
+      calch:'Your base already has money',
+      calcsub:'See how much',
+      calcbl1:'Average client budget',
+      calcbl2:'Such clients in your base',
+      calcPot:'Your potential',
+      calcFor:'For',
+      inThb:'In baht',inRub:'In rubles',rateLbl:'Rate',
+      rateOk:'Live rate',rateLoad:'Loading...',
+      perClLbl:'Per client',
+      calcR1a:'Property value',
+      calcR2a:'Your commission',
+      calcNote:"This is not a forecast. It's math. This is how every deal is calculated.",
+      clSfx:['client','clients','clients'],
+      zlh:'What do you lose if you try',
+      zlth1:'Fear',zlth2:'Reality',
+      zl1:["I'll lose the client",'The client is legally registered to you from first contact'],
+      zl2:['Need to spend time','Viewings, documents, deal — fully our side'],
+      zl3:['Need to know the market',"Not necessary. That's what we're here for"],
+      zl4:['Long wait for payment','Payment within 5 business days after closing'],
+      zl5:["It's one-time",'Client stays in the system — on repeat purchase you earn again'],
+      zlcon1:'Losses — zero. Risks — zero.',
+      zlcon2:'Your job — introduce. Ours — everything else.',
+      csh:'Real cases',
+      cssub:'Not reviews. Short stories — facts only.',
+      cs1:['Case 01','Realtor, Moscow. 2024. A client from the base asked about Thailand. Made the introduction. Deal closed in 6 weeks.','$4,200','First international. From scratch.'],
+      cs2:['Case 02','Broker, Almaty. 3 clients in one year. All from the existing base. Didn\'t look for a single new lead.','$19,800','Three deals. One year.'],
+      cs3:['Case 03','Agency, Yekaterinburg. 2025. Client bought again — at a higher price. Repeat commission with no extra work.','+$6,300','Repeat. No effort.'],
+      sttitle:'What it looks like from the inside',
+      st1h:'You keep working exactly as you do now',st1s:'Nothing changes in your routine.',
+      st2h:'Client says: "thinking about Thailand"',st2s:"You don't change the subject. You send one contact.",
+      st3h:'Everything else happens without you',st3s:'Viewings, legal, deal — IBG team.',
+      st4tag:'5 days after payment is made',st4s:'it arrives in your account. Without your involvement.',
+      st5h:"You didn't run this deal",st5s:'You simply connected.',
+      eth:'If you want to look inside',
+      etsub:'Private Telegram channel for partners. Real cases. Terms. Q&A. No spam.',
+      etbtn1:'Join the channel',etbtn2:'Learn the terms',
+      footerLink:'Privacy Policy',
+    }
+  };
+
+  componentDidMount(){
+    this._canvas();
+    this._reveal();
+    this._nav();
+    this._parallax();
+    this._rates();
+  }
+  componentWillUnmount(){ if(this._raf) cancelAnimationFrame(this._raf); }
+
+  _canvas(){
+    const c=document.getElementById('bgC'); if(!c) return;
+    const ctx=c.getContext('2d');
+    const sz=()=>{ c.width=window.innerWidth; c.height=window.innerHeight; };
+    window.addEventListener('resize',sz,{passive:true}); sz();
+    const W=()=>c.width, H=()=>c.height;
+    const isMob=window.matchMedia('(max-width:768px)').matches;
+    const ptCount=isMob?22:80;
+
+    const pts=Array.from({length:ptCount},()=>({
+      x:Math.random(),y:Math.random(),
+      sz:Math.random()*1.5+0.3,
+      vx:(Math.random()-.5)*.00013,vy:(Math.random()-.5)*.00013,
+      a:Math.random()*.45+.08,g:Math.random()<.14
+    }));
+
+    const orbs=[
+      {cx:.12,cy:.22,rx:.28,ry:.22,r:.58,ph:0,sp:.00038},
+      {cx:.84,cy:.55,rx:.22,ry:.18,r:.5,ph:2.2,sp:.00029},
+      {cx:.5,cy:.9,rx:.18,ry:.14,r:.44,ph:4.5,sp:.00033},
+      {cx:.38,cy:.38,rx:.14,ry:.11,r:.32,ph:1.1,sp:.00052},
+    ];
+
+    let t=0;
+    const draw=()=>{
+      t++;
+      ctx.clearRect(0,0,W(),H());
+
+      // Gradient: rich #1C355E
+      const bg=ctx.createLinearGradient(0,0,0,H());
+      bg.addColorStop(0,'#091524');
+      bg.addColorStop(.3,'#1C355E');
+      bg.addColorStop(.65,'#152d52');
+      bg.addColorStop(1,'#091524');
+      ctx.fillStyle=bg; ctx.fillRect(0,0,W(),H());
+
+      // Subtle tactical grid
+      ctx.strokeStyle='rgba(28,53,94,0.2)';
+      ctx.lineWidth=.5;
+      const gs=90;
+      for(let x=0;x<W();x+=gs){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H());ctx.stroke(); }
+      for(let y=0;y<H();y+=gs){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W(),y);ctx.stroke(); }
+
+      // Light beams from below — desktop only
+      if(!isMob){ ctx.save(); ctx.translate(W()*.5,H()*1.08);
+        for(let i=-2;i<=2;i++){
+          const ang=i*16*Math.PI/180;
+          const x2=Math.tan(ang)*H()*1.4;
+          const gb=ctx.createLinearGradient(0,0,x2,-H()*1.2);
+          const a=.038-Math.abs(i)*.006;
+          gb.addColorStop(0,`rgba(28,53,94,${a*2.2})`);
+          gb.addColorStop(.5,`rgba(28,53,94,${a})`);
+          gb.addColorStop(1,'rgba(0,0,0,0)');
+          ctx.strokeStyle=gb; ctx.lineWidth=75;
+          ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(x2,-H()*1.2); ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // Orbs
+      orbs.forEach(o=>{
+        const x=(o.cx+Math.sin(t*o.sp+o.ph)*o.rx)*W();
+        const y=(o.cy+Math.cos(t*o.sp*.68+o.ph)*o.ry)*H();
+        const r=o.r*Math.min(W(),H())*.5;
+        const g=ctx.createRadialGradient(x,y,0,x,y,r);
+        g.addColorStop(0,'rgba(28,53,94,.58)');
+        g.addColorStop(.4,'rgba(22,44,78,.22)');
+        g.addColorStop(1,'rgba(0,0,0,0)');
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+      });
+
+      // Scan lines — desktop only
+      if(!isMob){ for(let i=0;i<6;i++){
+        const yf=((t*.018+i/6)%1);
+        const a=Math.sin(yf*Math.PI)*.02;
+        ctx.strokeStyle=`rgba(230,220,160,${a})`; ctx.lineWidth=.5;
+        ctx.beginPath(); ctx.moveTo(0,yf*H()); ctx.lineTo(W(),yf*H()); ctx.stroke();
+      }}
+
+      // Constellation network
+      pts.forEach((p,i)=>{
+        p.x=((p.x+p.vx)%1+1)%1;
+        p.y=((p.y+p.vy)%1+1)%1;
+        // Connections (only check every 3rd for performance)
+        if(i%3===0){
+          for(let j=i+1;j<pts.length;j++){
+            const p2=pts[j];
+            const dx=(p.x-p2.x)*W(), dy=(p.y-p2.y)*H();
+            const d=Math.sqrt(dx*dx+dy*dy);
+            if(d<130){
+              const a=(1-d/130)*.07;
+              ctx.strokeStyle=`rgba(230,220,160,${a})`; ctx.lineWidth=.4;
+              ctx.beginPath(); ctx.moveTo(p.x*W(),p.y*H()); ctx.lineTo(p2.x*W(),p2.y*H()); ctx.stroke();
+            }
+          }
+        }
+        ctx.beginPath(); ctx.arc(p.x*W(),p.y*H(),p.sz,0,Math.PI*2);
+        ctx.fillStyle=p.g?`rgba(230,220,160,${p.a})`:`rgba(255,255,255,${p.a*.55})`;
+        ctx.fill();
+      });
+
+      this._raf=requestAnimationFrame(draw);
+    };
+    draw();
+  }
+
+  _reveal(){
+    const obs=new IntersectionObserver(es=>{
+      es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+    },{threshold:.06,rootMargin:'60px 0px 0px 0px'});
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    }));
+  }
+
+  _nav(){
+    const nav=document.getElementById('mainNav'); if(!nav) return;
+    window.addEventListener('scroll',()=>{
+      if(window.scrollY>60){
+        nav.style.background='rgba(8,14,28,.95)';
+        nav.style.backdropFilter='blur(22px)';
+        nav.style.borderBottom='1px solid rgba(230,220,160,.07)';
+      } else {
+        nav.style.background='transparent';
+        nav.style.backdropFilter='none';
+        nav.style.borderBottom='1px solid transparent';
+      }
+    },{passive:true});
+  }
+
+  _parallax(){
+    const h=document.getElementById('heroContent'); if(!h) return;
+    // Ensure visible on load before any scroll event fires
+    h.style.opacity='1';
+    h.style.transform='translateY(0)';
+    window.addEventListener('scroll',()=>{
+      const y=window.scrollY,vh=window.innerHeight;
+      if(y<vh){
+        h.style.transform=`translateY(${y*.18}px)`;
+        h.style.opacity=String(Math.max(0,1-(y/vh)*1.3));
+      } else if(y===0){
+        h.style.opacity='1';
+        h.style.transform='translateY(0)';
+      }
+    },{passive:true});
+  }
+
+  _rates(){
+    fetch('https://open.er-api.com/v6/latest/USD')
+      .then(r=>r.json())
+      .then(d=>{ if(d.rates) this.setState({thb:Math.round(d.rates.THB*10)/10,rub:Math.round(d.rates.RUB),ratesOk:true}); })
+      .catch(()=>this.setState({ratesOk:true}));
+  }
+
+  _f(n){ return Math.round(n).toLocaleString('ru-RU'); }
+
+  _pl(n,t){
+    const m=n%10,h=n%100;
+    if(m===1&&h!==11) return t[0];
+    if([2,3,4].includes(m)&&![12,13,14].includes(h)) return t[1];
+    return t[2];
+  }
+
+  renderVals(){
+    const s=this.state, t=this.T[s.lang];
+    const bud=this.B[s.bIdx], pc=bud*.03, tot=pc*s.clients;
+    const f=n=>this._f(n);
+    const qn=(s.q1!==null?1:0)+(s.q2!==null?1:0)+(s.q3!==null?1:0);
+
+    return {
+      // nav & lang
+      n1:t.n[0],n2:t.n[1],n3:t.n[2],n4:t.n[3],n5:t.n5,
+      langBtn:t.langBtn,
+      toggleLang:()=>this.setState({lang:s.lang==='ru'?'en':'ru'}),
+      menuOpen:s.menuOpen,
+      openMenu:()=>this.setState({menuOpen:true}),
+      closeMenu:()=>this.setState({menuOpen:false}),
+
+      // hero
+      badge:t.badge,
+      ht1:t.ht1,ht2:t.ht2,hsub:t.hsub,hbody:t.hbody,scrollTxt:t.scrollTxt,
+      wl1:t.wl1,wl2:t.wl2,wl3:t.wl3,
+
+      // mirror
+      m1h:t.m1h,m1p1:t.m1p1,m1p2:t.m1p2,m1q:t.m1q,
+
+      // diagnosis
+      d1h:t.d1h,d1sub:t.d1sub,dth1:t.dth1,dth2:t.dth2,
+      dr1a:t.dr1a,dr1b:t.dr1b,dr2a:t.dr2a,dr2b:t.dr2b,
+      dr3a:t.dr3a,dr3b:t.dr3b,dr4a:t.dr4a,dr4tag:t.dr4tag,dr4b:t.dr4b,dr4c:t.dr4c,
+      d1con1:t.d1con1,d1con2:t.d1con2,d1vis:t.d1vis,
+
+      // how it works
+      howClassified:t.howClassified,howh:t.howh,howsub:t.howsub,
+      how1:t.how1,how1s:t.how1s,how2:t.how2,how2s:t.how2s,
+      how3:t.how3,how3s:t.how3s,how4:t.how4,how4s:t.how4s,hownote:t.hownote,
+
+      // quiz
+      qzh:t.qzh,qzsub:t.qzsub,progLbl:t.progLbl,
+      quizProg:`${qn}/3`,quizProgW:`${Math.round((qn/3)*100)}%`,
+      q1lbl:t.q1lbl,q1txt:t.q1txt,
+      q1a0:t.q1a[0],q1a1:t.q1a[1],q1a2:t.q1a[2],q1a3:t.q1a[3],
+      q1ok:s.q1!==null,q1d:s.q1!==null,q1r:s.q1!==null?t.q1r[s.q1]:'',
+      q1o0:s.q1===0?'q-opt q-sel':'q-opt',q1o1:s.q1===1?'q-opt q-sel':'q-opt',
+      q1o2:s.q1===2?'q-opt q-sel':'q-opt',q1o3:s.q1===3?'q-opt q-sel':'q-opt',
+      sq10:()=>this.setState({q1:0}),sq11:()=>this.setState({q1:1}),
+      sq12:()=>this.setState({q1:2}),sq13:()=>this.setState({q1:3}),
+      q2lbl:t.q2lbl,q2txt:t.q2txt,
+      q2a0:t.q2a[0],q2a1:t.q2a[1],q2a2:t.q2a[2],
+      q2ok:s.q2!==null,q2d:s.q2!==null,q2r:s.q2!==null?t.q2r[s.q2]:'',
+      q2o0:s.q2===0?'q-opt q-sel':'q-opt',q2o1:s.q2===1?'q-opt q-sel':'q-opt',q2o2:s.q2===2?'q-opt q-sel':'q-opt',
+      sq20:()=>this.setState({q2:0}),sq21:()=>this.setState({q2:1}),sq22:()=>this.setState({q2:2}),
+      q3lbl:t.q3lbl,q3txt:t.q3txt,
+      q3a0:t.q3a[0],q3a1:t.q3a[1],q3a2:t.q3a[2],q3a3:t.q3a[3],
+      q3ok:s.q3!==null,q3d:s.q3!==null,q3r:s.q3!==null?t.q3r[s.q3]:'',
+      q3o0:s.q3===0?'q-opt q-sel':'q-opt',q3o1:s.q3===1?'q-opt q-sel':'q-opt',
+      q3o2:s.q3===2?'q-opt q-sel':'q-opt',q3o3:s.q3===3?'q-opt q-sel':'q-opt',
+      sq30:()=>this.setState({q3:0}),sq31:()=>this.setState({q3:1}),
+      sq32:()=>this.setState({q3:2}),sq33:()=>this.setState({q3:3}),
+      qfin1:t.qfin1,qfin2:t.qfin2,qfin3:t.qfin3,qfinBtn:t.qfinBtn,
+
+      // calculator
+      calch:t.calch,calcsub:t.calcsub,calcbl1:t.calcbl1,calcbl2:t.calcbl2,
+      calcPot:t.calcPot,calcFor:t.calcFor,
+      inThb:t.inThb,inRub:t.inRub,rateLbl:t.rateLbl,
+      rateNote:s.ratesOk?t.rateOk:t.rateLoad,
+      perClLbl:t.perClLbl,calcR1a:t.calcR1a,calcR2a:t.calcR2a,calcNote:t.calcNote,
+      clients:s.clients,clLabel:this._pl(s.clients,t.clSfx),
+      setClients:e=>this.setState({clients:parseInt(e.target.value)}),
+      b0:s.bIdx===0?'b-opt b-sel':'b-opt',b1:s.bIdx===1?'b-opt b-sel':'b-opt',
+      b2:s.bIdx===2?'b-opt b-sel':'b-opt',b3:s.bIdx===3?'b-opt b-sel':'b-opt',
+      sb0:()=>this.setState({bIdx:0}),sb1:()=>this.setState({bIdx:1}),
+      sb2:()=>this.setState({bIdx:2}),sb3:()=>this.setState({bIdx:3}),
+      selBudget:f(bud),perCl:f(pc),
+      commUSD:f(tot),commTHB:f(tot*s.thb),commRUB:f(tot*s.rub),
+
+      // zero losses
+      zlh:t.zlh,zlth1:t.zlth1,zlth2:t.zlth2,
+      zl1f:t.zl1[0],zl1r:t.zl1[1],zl2f:t.zl2[0],zl2r:t.zl2[1],
+      zl3f:t.zl3[0],zl3r:t.zl3[1],zl4f:t.zl4[0],zl4r:t.zl4[1],
+      zl5f:t.zl5[0],zl5r:t.zl5[1],zlcon1:t.zlcon1,zlcon2:t.zlcon2,
+
+      // cases
+      csh:t.csh,cssub:t.cssub,
+      cs1tag:t.cs1[0],cs1txt:t.cs1[1],cs1num:t.cs1[2],cs1sub:t.cs1[3],
+      cs2tag:t.cs2[0],cs2txt:t.cs2[1],cs2num:t.cs2[2],cs2sub:t.cs2[3],
+      cs3tag:t.cs3[0],cs3txt:t.cs3[1],cs3num:t.cs3[2],cs3sub:t.cs3[3],
+
+      // state
+      sttitle:t.sttitle,
+      st1h:t.st1h,st1s:t.st1s,st2h:t.st2h,st2s:t.st2s,
+      st3h:t.st3h,st3s:t.st3s,st4tag:t.st4tag,st4num:'От $3\u202f000+',st4s:t.st4s,
+      st5h:t.st5h,st5s:t.st5s,
+
+      // entry
+      eth:t.eth,etsub:t.etsub,etbtn1:t.etbtn1,etbtn2:t.etbtn2,
+      footerLink:t.footerLink,
+    };
+  }
+}
+</script>
+</body>
+</html>
