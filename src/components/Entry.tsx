@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLang } from "@/lib/LanguageContext";
 import Reveal from "./Reveal";
 
@@ -7,7 +8,22 @@ export default function Entry() {
   const { t } = useLang();
 
   return (
-    <section id="entry" className="sec relative z-1 px-10 py-22 text-center">
+    <section id="entry" className="sec relative z-1 overflow-hidden px-10 py-22 text-center">
+      <div className="absolute inset-0" aria-hidden>
+        <Image
+          src="/images/properties/villa-candlelit-pool.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          quality={75}
+          className="object-cover"
+          style={{ objectPosition: "center 70%" }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(180deg, rgba(13,28,56,.9) 0%, rgba(13,28,56,.85) 50%, rgba(13,28,56,.95) 100%)" }}
+        />
+      </div>
       <Reveal>
         <div
           className="mx-auto mb-15 h-px max-w-[960px]"

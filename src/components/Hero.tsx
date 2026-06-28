@@ -1,9 +1,38 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { useRef } from "react";
 import { useLang } from "@/lib/LanguageContext";
 import Reveal from "./Reveal";
+
+function HeroPhoto() {
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
+      <Image
+        src="/images/properties/villa-hero-pool.jpg"
+        alt=""
+        fill
+        priority
+        quality={82}
+        sizes="100vw"
+        className="object-cover"
+        style={{ objectPosition: "center 60%" }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(9,15,26,.30) 0%, rgba(13,28,56,.62) 48%, #091524 96%)",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 70% 55% at 50% 28%, rgba(230,220,160,.10), transparent 65%)" }}
+      />
+    </div>
+  );
+}
 
 function OrbitalRing() {
   return (
@@ -110,6 +139,7 @@ export default function Hero() {
       ref={ref}
       className="relative z-1 flex min-h-[100svh] items-center justify-center overflow-hidden"
     >
+      <HeroPhoto />
       <OrbitalRing />
       <FloatingBadges badges={t.hero.badges} />
 

@@ -1,7 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { useLang } from "@/lib/LanguageContext";
 import Reveal from "./Reveal";
+
+const CARD_PHOTOS = [
+  "/images/properties/villa-tropical-garden.jpg",
+  "/images/properties/villa-sunset-resort.jpg",
+  "/images/properties/villa-terrace-vase.jpg",
+];
 
 export default function Cases() {
   const { t } = useLang();
@@ -32,10 +39,27 @@ export default function Cases() {
           {t.cases.items.map((item, i) => (
             <Reveal key={i} delay={0.2 + i * 0.1}>
               <div
-                className="flex h-full min-h-[250px] flex-col justify-between rounded-[14px] border p-6"
-                style={{ borderColor: i === 1 ? "rgba(230,220,160,.2)" : "rgba(230,220,160,.1)", background: i === 1 ? "rgba(28,53,94,.26)" : "rgba(28,53,94,.2)" }}
+                className="group relative flex h-full min-h-[250px] flex-col justify-between overflow-hidden rounded-[14px] border p-6 transition-colors"
+                style={{ borderColor: i === 1 ? "rgba(230,220,160,.2)" : "rgba(230,220,160,.1)" }}
               >
-                <div>
+                <Image
+                  src={CARD_PHOTOS[i]}
+                  alt=""
+                  fill
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  quality={78}
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  style={{ zIndex: 0 }}
+                />
+                <div
+                  className="absolute inset-0 z-1"
+                  style={{
+                    background: i === 1
+                      ? "linear-gradient(165deg, rgba(13,28,56,.42) 0%, rgba(13,28,56,.82) 60%, rgba(13,28,56,.93) 100%)"
+                      : "linear-gradient(165deg, rgba(13,28,56,.55) 0%, rgba(13,28,56,.86) 60%, rgba(13,28,56,.94) 100%)",
+                  }}
+                />
+                <div className="relative z-2">
                   <div className="mb-3.5 text-[10px] font-bold tracking-[0.18em] uppercase" style={{ color: "rgba(230,220,160,.45)" }}>
                     {item.tag}
                   </div>
@@ -43,7 +67,7 @@ export default function Cases() {
                     {item.text}
                   </p>
                 </div>
-                <div className="mt-5 border-t pt-3.5" style={{ borderColor: "rgba(230,220,160,.1)" }}>
+                <div className="relative z-2 mt-5 border-t pt-3.5" style={{ borderColor: "rgba(230,220,160,.1)" }}>
                   <div className="text-2xl font-extrabold" style={{ color: "#E6DCA0", letterSpacing: "-0.01em" }}>
                     {item.num}
                   </div>

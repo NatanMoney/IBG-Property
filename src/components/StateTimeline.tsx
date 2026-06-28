@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useLang } from "@/lib/LanguageContext";
 import Reveal from "./Reveal";
 
@@ -9,6 +10,20 @@ export default function StateTimeline() {
 
   return (
     <section id="state" className="sec relative z-1 overflow-hidden px-10 py-20">
+      <div className="absolute inset-0" aria-hidden>
+        <Image
+          src="/images/properties/villa-aerial-solar.jpg"
+          alt=""
+          fill
+          sizes="100vw"
+          quality={75}
+          className="object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(180deg, rgba(13,28,56,.55) 0%, rgba(13,28,56,.8) 35%, rgba(13,28,56,.92) 100%)" }}
+        />
+      </div>
       <div className="pointer-events-none absolute inset-0 opacity-5.5">
         <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
           <path
