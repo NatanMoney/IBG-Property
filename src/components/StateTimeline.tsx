@@ -23,9 +23,7 @@ export default function StateTimeline() {
           className="absolute inset-0"
           style={{ background: "linear-gradient(180deg, rgba(13,28,56,.55) 0%, rgba(13,28,56,.8) 35%, rgba(13,28,56,.92) 100%)" }}
         />
-      </div>
-      <div className="pointer-events-none absolute inset-0 opacity-5.5">
-        <svg width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
+        <svg className="pointer-events-none absolute inset-0 opacity-5.5" width="100%" height="100%" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
           <path
             d="M0 300C200 200 400 400 600 300S1000 200 1200 300"
             fill="none"
