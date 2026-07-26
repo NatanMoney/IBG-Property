@@ -295,7 +295,40 @@ export default function Hero() {
         </Reveal>
 
         <Reveal delay={0.5}>
-          <div className="mt-11 flex flex-col items-center gap-2">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="#entry"
+              className="inline-flex items-center gap-2 rounded-lg px-7 py-3.5 text-[11px] font-bold tracking-[0.14em] uppercase transition-all duration-300 hover:brightness-110"
+              style={{ background: "#E6DCA0", color: "#0d1c38", border: "1px solid #E6DCA0" }}
+            >
+              {t.hero.ctaConditions}
+              <svg width="12" height="9" viewBox="0 0 14 10" fill="none">
+                <path d="M1 5H13M9 1L13 5L9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+            <a
+              href="/qualification"
+              className="inline-flex items-center gap-2 rounded-lg px-7 py-3.5 text-[11px] font-bold tracking-[0.14em] uppercase transition-all duration-300 hover:brightness-110"
+              style={{ background: "rgba(230,220,160,.15)", color: "#E6DCA0", border: "1px solid rgba(230,220,160,.55)" }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M9 11l3 3L22 4" stroke="#E6DCA0" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="#E6DCA0" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+              {t.hero.ctaQualification}
+            </a>
+            <a
+              href="#cases"
+              className="inline-flex items-center gap-2 rounded-lg px-7 py-3.5 text-[11px] font-bold tracking-[0.14em] uppercase transition-all duration-300 hover:opacity-80"
+              style={{ background: "transparent", color: "rgba(255,255,255,.65)", border: "1px solid rgba(255,255,255,.18)" }}
+            >
+              {t.hero.ctaCases}
+            </a>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.6}>
+          <div className="mt-10 flex flex-col items-center gap-2">
             <span className="text-[9px] font-bold tracking-[0.26em] uppercase" style={{ color: "rgba(255,255,255,.2)" }}>
               {t.hero.scroll}
             </span>

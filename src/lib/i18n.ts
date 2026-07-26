@@ -15,6 +15,9 @@ export const dict = {
       bodyLead: "Сейчас я покажу почему это работает.",
       bodyRest: "И почему у тебя есть то же самое – прямо сейчас.",
       scroll: "Скролл",
+      ctaConditions: "Получить условия",
+      ctaQualification: "Квалификация клиента",
+      ctaCases: "Посмотреть кейс",
       warmLead: { you: "Ты", lead: "Тёплый лид", dealLabel: "Сделка", deal: "от $3 000+" },
       badges: [
         { label: "Комиссия", value: "$4 200" },
@@ -176,6 +179,9 @@ export const dict = {
       bodyLead: "Now I'll show you why it works.",
       bodyRest: "And why you have the same opportunity – right now.",
       scroll: "Scroll",
+      ctaConditions: "Get terms",
+      ctaQualification: "Client qualification",
+      ctaCases: "See case",
       warmLead: { you: "You", lead: "Warm lead", dealLabel: "Deal", deal: "from $3,000+" },
       badges: [
         { label: "Commission", value: "$4,200" },
